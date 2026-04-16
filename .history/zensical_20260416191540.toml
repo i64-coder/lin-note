@@ -46,10 +46,10 @@ copyright = """
 # Read more: https://zensical.org/docs/setup/navigation/
 
 nav = [
-  {"首页" = "index.md"},
-  {"工具" = [
-    "工具/Markdown.md",
-    "工具/Zensical.md",
+  {"首页": }
+  {"首页" = [
+    "首页/Markdown.md",
+    "首页/Zensical.md",
 
   ]},
   {"GESP" = [
