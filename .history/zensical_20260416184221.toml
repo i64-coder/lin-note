@@ -48,8 +48,7 @@ copyright = """
 nav = [
   {"首页" = [
     "首页/Markdown.md",
-    "首页/Zensical.md",
-
+    
   ]},
   {"GESP" = [
     {"GESP 一级与二级" = [

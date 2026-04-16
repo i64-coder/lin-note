@@ -45,100 +45,7 @@ copyright = """
 #
 # Read more: https://zensical.org/docs/setup/navigation/
 
-nav = [
-  {"首页" = [
-    "首页/Markdown.md",
-    "首页/Zensical.md",
 
-  ]},
-  {"GESP" = [
-    {"GESP 一级与二级" = [
-        "GESP/GESP 一级与二级/C++入门.md",
-        "GESP/GESP 一级与二级/基本数据类型.md",
-        "GESP/GESP 一级与二级/格式化输入与输出.md",
-        "GESP/GESP 一级与二级/基本运算与类型转换.md",
-        "GESP/GESP 一级与二级/选择结构.md",
-        "GESP/GESP 一级与二级/多分支.md",
-        "GESP/GESP 一级与二级/循环结构.md",
-        "GESP/GESP 一级与二级/多重循环.md",
-        "GESP/GESP 一级与二级/常用函数1.md"
-      ]},
-      {"GESP 三级" = [
-        "GESP/GESP 三级/一维数组.md",
-        "GESP/GESP 三级/二维数组.md",
-        "GESP/GESP 三级/字符数组.md",
-        "GESP/GESP 三级/字符串.md",
-        "GESP/GESP 三级/位运算及其使用技巧.md",
-        "GESP/GESP 三级/进制转换及数据编码.md",
-        "GESP/GESP 三级/常用函数2.md",
-        "GESP/GESP 三级/枚举、模拟和递推.md"
-      ]},
-      {"GESP 四级" = [
-        "GESP/GESP 四级/结构体.md",
-        "GESP/GESP 四级/指针.md",
-        "GESP/GESP 四级/函数.md",
-        "GESP/GESP 四级/计数排序与冒泡排序.md",
-        "GESP/GESP 四级/选择排序与插入排序.md",
-        "GESP/GESP 四级/排序的稳定性与复杂度的估算.md",
-        "GESP/GESP 四级/文件操作与异常处理.md",
-        "GESP/GESP 四级/STL容器.md"
-      ]},
-      {"GESP 五级" = [
-        "GESP/GESP 五级/递归与回溯.md",
-        "GESP/GESP 五级/快速排序与归并排序.md",
-        "GESP/GESP 五级/高精度算法.md",
-        "GESP/GESP 五级/整数二分与小数二分.md",
-        "GESP/GESP 五级/二分枚举答案.md",
-        "GESP/GESP 五级/二分与离散化.md",
-        "GESP/GESP 五级/前缀和与差分.md",
-        "GESP/GESP 五级/链表.md",
-        "GESP/GESP 五级/质数、质因子与最大公约数.md",
-        "GESP/GESP 五级/埃氏筛法与线性筛法.md",
-        "GESP/GESP 五级/快速幂、均值定理、数论分块.md"
-      ]},
-      {"GESP 六级" = [
-        "GESP/GESP 六级/类.md",
-        "GESP/GESP 六级/栈.md",
-        "GESP/GESP 六级/队列.md",
-        "GESP/GESP 六级/深度优先搜索.md",
-        "GESP/GESP 六级/广度优先搜索.md",
-        "GESP/GESP 六级/搜索优化.md",
-        "GESP/GESP 六级/树基础.md",
-        "GESP/GESP 六级/树的遍历.md",
-        "GESP/GESP 六级/哈夫曼树与哈夫曼编码、格雷码.md",
-        "GESP/GESP 六级/二叉排序树与平衡树.md",
-        "GESP/GESP 六级/树的直径、重心.md",
-        "GESP/GESP 六级/最近公共祖先.md",
-        "GESP/GESP 六级/动态规划基础与线性 DP.md",
-        "GESP/GESP 六级/背包问题.md",
-        "GESP/GESP 六级/状压 DP.md",
-        "GESP/GESP 六级/树形 DP.md"
-      ]},
-      {"GESP 七级" = [
-        "GESP/GESP 七级/哈希表.md",
-        "GESP/GESP 七级/图基础.md",
-        "GESP/GESP 七级/图遍历.md",
-        "GESP/GESP 七级/Floyd.md",
-        "GESP/GESP 七级/Dijkstra.md",
-        "GESP/GESP 七级/Bellman-Ford、SPFA.md",
-        "GESP/GESP 七级/单源次短路.md",
-        "GESP/GESP 七级/最长上升子序列、最长公共子序列.md",
-        "GESP/GESP 七级/区间 DP.md"
-      ]},
-      {"GESP 八级" = [
-        "GESP/GESP 八级/滑动窗口与单调队列.md",
-        "GESP/GESP 八级/堆与优先队列.md",
-        "GESP/GESP 八级/并查集.md",
-        "GESP/GESP 八级/ST表.md",
-        "GESP/GESP 八级/树状数组.md",
-        "GESP/GESP 八级/线段树.md",
-        "GESP/GESP 八级/最小生成树.md",
-        "GESP/GESP 八级/拓扑排序.md",
-        "GESP/GESP 八级/二分图.md"
-      ]}
-  ]}
-  
-]
 
 # With the "extra_css" option you can add your own CSS styling to customize
 # your Zensical project according to your needs. You can add any number of
@@ -148,10 +55,7 @@ nav = [
 #
 # Read more: https://zensical.org/docs/customization/#additional-css
 #
-extra_css = [
-  "stylesheets/extra.css",
-  "https://unpkg.com/katex@0/dist/katex.min.css"
-]
+extra_css = ["stylesheets/extra.css"]
 
 # With the `extra_javascript` option you can add your own JavaScript to your
 # project to customize the behavior according to your needs.
@@ -159,12 +63,7 @@ extra_css = [
 # The path provided should be relative to the "docs_dir".
 #
 # Read more: https://zensical.org/docs/customization/#additional-javascript
-extra_javascript = [
-  "javascripts/extra.js",
-  "javascripts/katex.js",
-  "https://unpkg.com/katex@0/dist/katex.min.js",
-  "https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"
-]
+extra_javascript = ["javascripts/extra.js"]
 
 # ----------------------------------------------------------------------------
 # Section for configuring theme options
@@ -446,3 +345,4 @@ combine_header_slug = true
 [project.markdown_extensions.pymdownx.tasklist]
 custom_checkbox = true
 [project.markdown_extensions.pymdownx.tilde]
+

@@ -47,9 +47,7 @@ copyright = """
 
 nav = [
   {"首页" = [
-    "首页/Markdown.md",
-    "首页/Zensical.md",
-
+    "首页/Markdown.md"
   ]},
   {"GESP" = [
     {"GESP 一级与二级" = [
@@ -148,10 +146,7 @@ nav = [
 #
 # Read more: https://zensical.org/docs/customization/#additional-css
 #
-extra_css = [
-  "stylesheets/extra.css",
-  "https://unpkg.com/katex@0/dist/katex.min.css"
-]
+extra_css = ["stylesheets/extra.css"]
 
 # With the `extra_javascript` option you can add your own JavaScript to your
 # project to customize the behavior according to your needs.
@@ -162,8 +157,8 @@ extra_css = [
 extra_javascript = [
   "javascripts/extra.js",
   "javascripts/katex.js",
-  "https://unpkg.com/katex@0/dist/katex.min.js",
-  "https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"
+    "https://unpkg.com/katex@0/dist/katex.min.js",
+    "https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"
 ]
 
 # ----------------------------------------------------------------------------
