@@ -2415,6 +2415,45 @@
   <a href="#dp_1" class="md-nav__link">
     <span class="md-ellipsis">
       
+        DP 基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DP 基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b4016" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B4016 树的直径
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1122" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1122 最大子树和
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dp_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
         换根 DP
       
     </span>
@@ -3217,6 +3256,45 @@
   <a href="#dp_1" class="md-nav__link">
     <span class="md-ellipsis">
       
+        DP 基础
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DP 基础">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#b4016" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B4016 树的直径
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1122" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1122 最大子树和
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dp_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
         换根 DP
       
     </span>
@@ -3378,18 +3456,247 @@
 <li><strong>自底向上计算</strong>：通过递归，先计算子节点的状态，再回溯推导父节点的状态</li>
 <li><strong>无后效性</strong>：由于树的无环性质，子树之间的状态相互独立</li>
 </ol>
-<h2 id="dp_1">换根 DP<a class="headerlink" href="#dp_1" title="Permanent link">&para;</a></h2>
+<h2 id="dp_1">DP 基础<a class="headerlink" href="#dp_1" title="Permanent link">&para;</a></h2>
+<p>用数组维护子树信息，然后推导出当前节点的信息。</p>
+<h3 id="b4016">B4016 树的直径<a class="headerlink" href="#b4016" title="Permanent link">&para;</a></h3>
+<details class="note" open="open">
+<summary>题目大意</summary>
+<p>给定一棵有 <span class="arithmatex">\(n\)</span> 个节点的树，求树的直径，即树上最远的两点之间的距离。</p>
+</details>
+<p>考虑一下，假设树根为 1，因为直径是一条最长的链，假设说这条直径经过点 <span class="arithmatex">\(u\)</span>，</p>
+<p>那么想一想这条直径会不会被拆成两部分呢：</p>
+<ol>
+<li>一部分在 <span class="arithmatex">\(u\)</span> 的某个子树里，另一部分在另一个子树里？</li>
+<li>或者一部分在 <span class="arithmatex">\(u\)</span> 的某个子树里，另一部分在 <span class="arithmatex">\(u\)</span> 的上方（即经过它的父亲）？</li>
+</ol>
+<p>我们一般会用递归先求子节点的信息，然后再求父亲的信息。所以，我们在处理点 <span class="arithmatex">\(u\)</span> 的时候，<strong>只能知道它所有子树内部的情况，还不知道“上方”是什么样子</strong>——因为父节点还没处理完，或者根本不会回过头来告诉它。</p>
+<p>那怎么办？难道第二种情况（路径穿过 <span class="arithmatex">\(u\)</span> 并延伸到祖先）就统计不到了吗？</p>
+<p><strong>不用慌！因为那条“穿过 <span class="arithmatex">\(u\)</span> 并往上走”的路径，一定会在更高层的某个祖先节点那里，被当成“两个子树路径的拼接”而统计到！</strong></p>
+<p>换句话说：<strong>任何一条简单路径，在树中都有唯一的“最高点”（即路径两端点的最近公共祖先，LCA）</strong>。  </p>
+<p>而我们的 DFS 正好会遍历到这个“最高点”。</p>
+<p>试想：假设真正的直径是从节点 <span class="arithmatex">\(a\)</span> 到节点 <span class="arithmatex">\(b\)</span>，它们的 LCA 是 <span class="arithmatex">\(p\)</span>。</p>
+<p>那么从 <span class="arithmatex">\(p\)</span> 出发，<span class="arithmatex">\(a\)</span> 一定在某个子树里，<span class="arithmatex">\(b\)</span> 一定在另一个子树里。</p>
+<p>因为直径是最长的路径，所以 <span class="arithmatex">\(a\)</span> 和 <span class="arithmatex">\(b\)</span> 是以 <span class="arithmatex">\(p\)</span> 为根的子树中，最远距离的两点，它们一定是叶子节点。</p>
+<p>那么，<strong>从 <span class="arithmatex">\(p\)</span> 出发，我们只需要找到两个最远的叶子节点，它们的距离就是以 <span class="arithmatex">\(p\)</span> 为根的最长路径</strong>。</p>
+<p>所以，我们只需要在 DFS 中维护两个信息：</p>
+<ul>
+<li>从当前节点 <span class="arithmatex">\(u\)</span> 向下走（只进入子树，不回头）所能到达的最远距离，记为 <code>maxDep[u]</code></li>
+<li>以当前节点 <span class="arithmatex">\(u\)</span> 为根的子树中，经过 <span class="arithmatex">\(u\)</span> 的最长路径长度<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>，记为 <code>maxDist[u]</code></li>
+</ul>
+<p>那么最长路径长度等于最大的两个孩子的 <code>maxDep[]</code> 之和，再加上 <span class="arithmatex">\(2\)</span>（<span class="arithmatex">\(u\)</span> 本身）。</p>
+<div class="language-cpp highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-0-10">10</a></span>
+<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span>
+<span class="normal"><a href="#__codelineno-0-26">26</a></span>
+<span class="normal"><a href="#__codelineno-0-27">27</a></span>
+<span class="normal"><a href="#__codelineno-0-28">28</a></span>
+<span class="normal"><a href="#__codelineno-0-29">29</a></span>
+<span class="normal"><a href="#__codelineno-0-30">30</a></span>
+<span class="normal"><a href="#__codelineno-0-31">31</a></span>
+<span class="normal"><a href="#__codelineno-0-32">32</a></span>
+<span class="normal"><a href="#__codelineno-0-33">33</a></span>
+<span class="normal"><a href="#__codelineno-0-34">34</a></span>
+<span class="normal"><a href="#__codelineno-0-35">35</a></span>
+<span class="normal"><a href="#__codelineno-0-36">36</a></span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span>
+<span class="normal"><a href="#__codelineno-0-38">38</a></span>
+<span class="normal"><a href="#__codelineno-0-39">39</a></span>
+<span class="normal"><a href="#__codelineno-0-40">40</a></span>
+<span class="normal"><a href="#__codelineno-0-41">41</a></span>
+<span class="normal"><a href="#__codelineno-0-42">42</a></span>
+<span class="normal"><a href="#__codelineno-0-43">43</a></span>
+<span class="normal"><a href="#__codelineno-0-44">44</a></span>
+<span class="normal"><a href="#__codelineno-0-45">45</a></span>
+<span class="normal"><a href="#__codelineno-0-46">46</a></span>
+<span class="normal"><a href="#__codelineno-0-47">47</a></span>
+<span class="normal"><a href="#__codelineno-0-48">48</a></span>
+<span class="normal"><a href="#__codelineno-0-49">49</a></span>
+<span class="normal"><a href="#__codelineno-0-50">50</a></span>
+<span class="normal"><a href="#__codelineno-0-51">51</a></span>
+<span class="normal"><a href="#__codelineno-0-52">52</a></span>
+<span class="normal"><a href="#__codelineno-0-53">53</a></span>
+<span class="normal"><a href="#__codelineno-0-54">54</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;bits/stdc++.h&quot;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="k">using</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="cp">#define endl &#39;\n&#39;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="cp">#define read(x) scanf (&quot;%lld&quot;, &amp;x)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">const</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e6</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="n">ll</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="n">vector</span><span class="o">&lt;</span><span class="n">ll</span><span class="o">&gt;</span><span class="w"> </span><span class="n">g</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="n">ll</span><span class="w"> </span><span class="n">maxDep</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="n">ll</span><span class="w"> </span><span class="n">maxDist</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="kt">void</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="n">fa</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">  </span><span class="n">set</span><span class="o">&lt;</span><span class="n">ll</span><span class="o">&gt;</span><span class="w"> </span><span class="n">mx</span><span class="p">;</span><span class="w"> </span><span class="c1">// 利用 mx 求出最远的两个</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">g</span><span class="p">[</span><span class="n">u</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fa</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w">    </span><span class="n">dfs</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">u</span><span class="p">);</span><span class="w"> </span><span class="c1">// 先求孩子的信息</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="w">    </span><span class="n">mx</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">maxDep</span><span class="p">[</span><span class="n">v</span><span class="p">]);</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mx</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">mx</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">mx</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span><span class="w"> </span><span class="c1">// 维护两个最大值</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mx</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="w">    </span><span class="n">maxDep</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="w">    </span><span class="n">maxDist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mx</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="w">    </span><span class="n">maxDep</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="o">*</span><span class="n">mx</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="w">    </span><span class="n">maxDist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="o">*</span><span class="n">mx</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="w">    </span><span class="n">maxDep</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="o">++</span><span class="n">mx</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="w">    </span><span class="n">maxDist</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="o">*</span><span class="n">mx</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="o">++</span><span class="n">mx</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="p">}</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="p">{</span>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="w">  </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="w">    </span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"> </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="w">    </span><span class="n">g</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="w">    </span><span class="n">g</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="w">  </span><span class="n">dfs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="w">  </span><span class="n">ll</span><span class="w"> </span><span class="n">mx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">mx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span><span class="w"> </span><span class="n">maxDist</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">mx</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="p1122">P1122 最大子树和<a class="headerlink" href="#p1122" title="Permanent link">&para;</a></h3>
+<details class="note" open="open">
+<summary>题目大意</summary>
+<p>给定一棵有 <span class="arithmatex">\(n\)</span> 个节点的<strong>无根树</strong>（即连通无环图），每个节点有一个“美丽指数”（可为正、负或零）。  </p>
+<p>你可以进行任意次“修剪”操作：每次选择一条边将其删除，把树分成两部分，并<strong>丢弃其中一部分</strong>。  </p>
+<p>最终目标是通过若干次这样的操作（也可以不操作），<strong>保留一个连通的子树</strong>，使得该子树中所有节点的美丽指数之和<strong>最大</strong>。</p>
+<p><strong>求这个最大可能的和。</strong></p>
+</details>
+<p>注意到，我们每一次删除，都会将一棵子树从树中删除掉，什么情况下，要把该子树删掉呢？他的总和为负数的情况下，我们就可以删掉它，因为他对答案是负贡献，尽量选择保留正贡献的子树。</p>
+<p>这是一棵无根树，对于树上问题，我们只能先假定一个根（这里假定是1），才能进行DFS搜索。但是最终剩下的子树，却又不一定以 <span class="arithmatex">\(1\)</span> 为根，但是剩下的这棵树，最终一定会有一个最高点，该最高点一定会将父亲断开。</p>
+<p>为了找到这个最高点，我们假设 <span class="arithmatex">\(u\)</span> 就是该最高点，然后求最大和，因为 <span class="arithmatex">\(u\)</span> 是最高点了，所以，<span class="arithmatex">\(u\)</span> 的父亲 <span class="arithmatex">\(fa\)</span> 一定不会在剩下的子树中，所以，我们只需要求出 <span class="arithmatex">\(u\)</span> 的最大子树和即可。</p>
+<p>最大子树和如何求呢？假设 <span class="arithmatex">\(x\)</span> 是 <span class="arithmatex">\(u\)</span> 的儿子，如果以 <span class="arithmatex">\(x\)</span> 为根的子树能够产生正贡献，就选择保留以 <span class="arithmatex">\(x\)</span> 为根的子树，否则丢弃；</p>
+<p>其他孩子也同理。</p>
+<div class="language-cpp highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span>
+<span class="normal"><a href="#__codelineno-1-19">19</a></span>
+<span class="normal"><a href="#__codelineno-1-20">20</a></span>
+<span class="normal"><a href="#__codelineno-1-21">21</a></span>
+<span class="normal"><a href="#__codelineno-1-22">22</a></span>
+<span class="normal"><a href="#__codelineno-1-23">23</a></span>
+<span class="normal"><a href="#__codelineno-1-24">24</a></span>
+<span class="normal"><a href="#__codelineno-1-25">25</a></span>
+<span class="normal"><a href="#__codelineno-1-26">26</a></span>
+<span class="normal"><a href="#__codelineno-1-27">27</a></span>
+<span class="normal"><a href="#__codelineno-1-28">28</a></span>
+<span class="normal"><a href="#__codelineno-1-29">29</a></span>
+<span class="normal"><a href="#__codelineno-1-30">30</a></span>
+<span class="normal"><a href="#__codelineno-1-31">31</a></span>
+<span class="normal"><a href="#__codelineno-1-32">32</a></span>
+<span class="normal"><a href="#__codelineno-1-33">33</a></span>
+<span class="normal"><a href="#__codelineno-1-34">34</a></span>
+<span class="normal"><a href="#__codelineno-1-35">35</a></span>
+<span class="normal"><a href="#__codelineno-1-36">36</a></span>
+<span class="normal"><a href="#__codelineno-1-37">37</a></span>
+<span class="normal"><a href="#__codelineno-1-38">38</a></span>
+<span class="normal"><a href="#__codelineno-1-39">39</a></span>
+<span class="normal"><a href="#__codelineno-1-40">40</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;bits/stdc++.h&quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="k">using</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="cp">#define endl &#39;\n&#39;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="cp">#define read(x) scanf (&quot;%lld&quot;, &amp;x)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="k">const</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e6</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="n">ll</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="n">ll</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="n">vector</span><span class="o">&lt;</span><span class="n">ll</span><span class="o">&gt;</span><span class="w"> </span><span class="n">g</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="n">ll</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="kt">void</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="n">fa</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">  </span><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">g</span><span class="p">[</span><span class="n">u</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">fa</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">    </span><span class="n">dfs</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="w"> </span><span class="n">u</span><span class="p">);</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="w">    </span><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">max</span><span class="o">&lt;</span><span class="n">ll</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">v</span><span class="p">]);</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="p">}</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a><span class="p">{</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="w">  </span><span class="n">read</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="w">    </span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="p">;</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">u</span><span class="p">),</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a><span class="w">    </span><span class="n">g</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a><span class="w">    </span><span class="n">g</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">u</span><span class="p">);</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33"></a><span class="w">  </span><span class="n">dfs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34"></a>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35"></a><span class="w">  </span><span class="n">ll</span><span class="w"> </span><span class="n">mx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-1e18</span><span class="p">;</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">mx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">max</span><span class="p">(</span><span class="n">mx</span><span class="p">,</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37"></a><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%lld</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">mx</span><span class="p">);</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38"></a>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h2 id="dp_2">换根 DP<a class="headerlink" href="#dp_2" title="Permanent link">&para;</a></h2>
 <p>树形 DP 中的换根 DP 问题又被称为二次扫描，题目一般需要我们选取一个最优的根，使得结果最优化。</p>
 <p>我们一般会先假定 1 为根，然后用一次 DFS 去预处理一些子树的信息，然后再用第二次 DFS 将父亲的信息传达给孩子，求出以该孩子为根时的信息。</p>
 <h3 id="p1364">P1364 医院设置<a class="headerlink" href="#p1364" title="Permanent link">&para;</a></h3>
 <details class="note" open="open">
 <summary>题目大意</summary>
-<p>给定一棵有 n 个节点的二叉树，每个节点有一定数量的居民（人口数 w），树中相邻节点之间的距离为 1。</p>
+<p>给定一棵有 <span class="arithmatex">\(n\)</span> 个节点的二叉树，每个节点有一定数量的居民（人口数 <span class="arithmatex">\(w\)</span>），树中相邻节点之间的距离为 1。</p>
 <p>现在要在某个节点上建立一家医院，使得所有居民到该医院的总路程（即“人口数 × 到医院的距离”的总和）最小。</p>
 <p>输入包括：</p>
 <ul>
-<li>节点总数 n；</li>
-<li>每个节点的人口数 w，以及其左子节点 u 和右子节点 v（0 表示无子节点）。</li>
+<li>节点总数 <span class="arithmatex">\(n\)</span>；</li>
+<li>每个节点的人口数 <span class="arithmatex">\(w\)</span>，以及其左子节点 <span class="arithmatex">\(u\)</span> 和右子节点 <span class="arithmatex">\(v\)</span>（0 表示无子节点）。</li>
 </ul>
 <p>输出要求：找出一个建医院的位置，使得所有居民到该点的加权距离总和最小，并输出这个最小总距离。</p>
 </details>
@@ -3406,27 +3713,27 @@
 <p>左子树中每个人走到 <span class="arithmatex">\(u\)</span>，都要先走到左孩子 <code>ls[u]</code>（产生的路程总和是 <code>dp[ls[u]]</code>），再走一步到 <span class="arithmatex">\(u\)</span>（共 <code>siz[ls[u]]</code> 人再多走一步从左孩子到达 <span class="arithmatex">\(u\)</span>，多走 <code>siz[ls[u]]</code> 路程）。  </p>
 <p>右子树同理。</p>
 <p>所以：</p>
-<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]];</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">w</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]];</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">w</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
 </span></code></pre></div>
 <p>用 dfs1 预处理信息：</p>
-<div class="language-cpp highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
-<span class="normal"><a href="#__codelineno-1-2">2</a></span>
-<span class="normal"><a href="#__codelineno-1-3">3</a></span>
-<span class="normal"><a href="#__codelineno-1-4">4</a></span>
-<span class="normal"><a href="#__codelineno-1-5">5</a></span>
-<span class="normal"><a href="#__codelineno-1-6">6</a></span>
-<span class="normal"><a href="#__codelineno-1-7">7</a></span>
-<span class="normal"><a href="#__codelineno-1-8">8</a></span>
-<span class="normal"><a href="#__codelineno-1-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">dfs1</span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="w">  </span><span class="n">dfs1</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]);</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="w">  </span><span class="n">dfs1</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]);</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">  </span><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]];</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">  </span><span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">w</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="p">}</span>
+<div class="language-cpp highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">5</a></span>
+<span class="normal"><a href="#__codelineno-3-6">6</a></span>
+<span class="normal"><a href="#__codelineno-3-7">7</a></span>
+<span class="normal"><a href="#__codelineno-3-8">8</a></span>
+<span class="normal"><a href="#__codelineno-3-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">dfs1</span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">  </span><span class="n">dfs1</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]);</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">  </span><span class="n">dfs1</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]);</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">  </span><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]];</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">  </span><span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">w</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
 <p>那么现在 <span class="arithmatex">\(1 \sim n\)</span> 这些点中，只有 <span class="arithmatex">\(1\)</span> 号点的 <span class="arithmatex">\(dp[1]\)</span> 是真的能够表示成所有居民到达 <span class="arithmatex">\(1\)</span> 的路程总和，其他点(假定为<span class="arithmatex">\(u\)</span>)的 <span class="arithmatex">\(dp[u]\)</span> 都只能表示为子树中的所有居民到达 <span class="arithmatex">\(u\)</span> 的路程总和，还缺少 <span class="arithmatex">\(siz[1] - siz[u]\)</span> 人没有走到 <span class="arithmatex">\(u\)</span>。</p>
 <hr />
@@ -3446,71 +3753,124 @@
 dp[u] = dp[fa] + siz[1] - 2 \cdot siz[u]
 \]</div>
 <p>用 dfs2 完成换根递推：</p>
-<div class="language-cpp highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
-<span class="normal"><a href="#__codelineno-2-2">2</a></span>
-<span class="normal"><a href="#__codelineno-2-3">3</a></span>
-<span class="normal"><a href="#__codelineno-2-4">4</a></span>
-<span class="normal"><a href="#__codelineno-2-5">5</a></span>
-<span class="normal"><a href="#__codelineno-2-6">6</a></span>
-<span class="normal"><a href="#__codelineno-2-7">7</a></span>
-<span class="normal"><a href="#__codelineno-2-8">8</a></span>
-<span class="normal"><a href="#__codelineno-2-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">dfs2</span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="n">fa</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fa</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">    </span><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">fa</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">  </span><span class="n">dfs2</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="w"> </span><span class="n">u</span><span class="p">);</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">  </span><span class="n">dfs2</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="w"> </span><span class="n">u</span><span class="p">);</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="p">}</span>
+<div class="language-cpp highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span>
+<span class="normal"><a href="#__codelineno-4-4">4</a></span>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span>
+<span class="normal"><a href="#__codelineno-4-6">6</a></span>
+<span class="normal"><a href="#__codelineno-4-7">7</a></span>
+<span class="normal"><a href="#__codelineno-4-8">8</a></span>
+<span class="normal"><a href="#__codelineno-4-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">dfs2</span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="n">fa</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fa</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">    </span><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">fa</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w">  </span><span class="n">dfs2</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="w"> </span><span class="n">u</span><span class="p">);</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w">  </span><span class="n">dfs2</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="w"> </span><span class="n">u</span><span class="p">);</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="p">}</span>
 </span></code></pre></div></td></tr></table></div>
 <h4 id="_3">第三步：找到最优的根，使得答案最优<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
-<div class="language-cpp line-numbers highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;bits/stdc++.h&quot;</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">using</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">;</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="cp">#define endl &#39;\n&#39;</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="cp">#define read(x) scanf (&quot;%lld&quot;, &amp;x)</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">const</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e6</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">ll</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">ll</span><span class="w"> </span><span class="n">w</span><span class="p">[</span><span class="n">N</span><span class="p">],</span><span class="w"> </span><span class="n">ls</span><span class="p">[</span><span class="n">N</span><span class="p">],</span><span class="w"> </span><span class="n">rs</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">ll</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">N</span><span class="p">];</span><span class="w"> </span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="n">ll</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">N</span><span class="p">];</span><span class="w"> </span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="kt">void</span><span class="w"> </span><span class="nf">dfs1</span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">  </span><span class="n">dfs1</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]);</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">  </span><span class="n">dfs1</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]);</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">  </span><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]];</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">  </span><span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">w</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="p">}</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="kt">void</span><span class="w"> </span><span class="nf">dfs2</span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="n">fa</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fa</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">    </span><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">fa</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">  </span><span class="n">dfs2</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="w"> </span><span class="n">u</span><span class="p">);</span>
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">  </span><span class="n">dfs2</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="w"> </span><span class="n">u</span><span class="p">);</span>
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="p">}</span>
-</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>
-</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
-</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="p">{</span>
-</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="w">  </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
-</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="w">  </span><span class="n">dfs1</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="w">  </span><span class="n">dfs2</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
-</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>
-</span><span id="__span-3-41"><a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a><span class="w">  </span><span class="n">ll</span><span class="w"> </span><span class="n">ans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e18</span><span class="p">;</span>
-</span><span id="__span-3-42"><a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">ans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-</span><span id="__span-3-43"><a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ans</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
-</span><span id="__span-3-44"><a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-3-45"><a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a><span class="p">}</span>
-</span></code></pre></div>
+<p>时间复杂度：<span class="arithmatex">\(O(n)\)</span></p>
+<div class="language-cpp highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span>
+<span class="normal"><a href="#__codelineno-5-21">21</a></span>
+<span class="normal"><a href="#__codelineno-5-22">22</a></span>
+<span class="normal"><a href="#__codelineno-5-23">23</a></span>
+<span class="normal"><a href="#__codelineno-5-24">24</a></span>
+<span class="normal"><a href="#__codelineno-5-25">25</a></span>
+<span class="normal"><a href="#__codelineno-5-26">26</a></span>
+<span class="normal"><a href="#__codelineno-5-27">27</a></span>
+<span class="normal"><a href="#__codelineno-5-28">28</a></span>
+<span class="normal"><a href="#__codelineno-5-29">29</a></span>
+<span class="normal"><a href="#__codelineno-5-30">30</a></span>
+<span class="normal"><a href="#__codelineno-5-31">31</a></span>
+<span class="normal"><a href="#__codelineno-5-32">32</a></span>
+<span class="normal"><a href="#__codelineno-5-33">33</a></span>
+<span class="normal"><a href="#__codelineno-5-34">34</a></span>
+<span class="normal"><a href="#__codelineno-5-35">35</a></span>
+<span class="normal"><a href="#__codelineno-5-36">36</a></span>
+<span class="normal"><a href="#__codelineno-5-37">37</a></span>
+<span class="normal"><a href="#__codelineno-5-38">38</a></span>
+<span class="normal"><a href="#__codelineno-5-39">39</a></span>
+<span class="normal"><a href="#__codelineno-5-40">40</a></span>
+<span class="normal"><a href="#__codelineno-5-41">41</a></span>
+<span class="normal"><a href="#__codelineno-5-42">42</a></span>
+<span class="normal"><a href="#__codelineno-5-43">43</a></span>
+<span class="normal"><a href="#__codelineno-5-44">44</a></span>
+<span class="normal"><a href="#__codelineno-5-45">45</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;bits/stdc++.h&quot;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="k">using</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="p">;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="cp">#define endl &#39;\n&#39;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="cp">#define read(x) scanf (&quot;%lld&quot;, &amp;x)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="k">const</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e6</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="n">ll</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="n">ll</span><span class="w"> </span><span class="n">w</span><span class="p">[</span><span class="n">N</span><span class="p">],</span><span class="w"> </span><span class="n">ls</span><span class="p">[</span><span class="n">N</span><span class="p">],</span><span class="w"> </span><span class="n">rs</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="n">ll</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">N</span><span class="p">];</span><span class="w"> </span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="n">ll</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">N</span><span class="p">];</span><span class="w"> </span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="kt">void</span><span class="w"> </span><span class="nf">dfs1</span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="w">  </span><span class="n">dfs1</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]);</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="w">  </span><span class="n">dfs1</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]);</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a><span class="w">  </span><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]];</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21"></a><span class="w">  </span><span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">]]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">w</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22"></a><span class="p">}</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23"></a>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24"></a><span class="kt">void</span><span class="w"> </span><span class="nf">dfs2</span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">ll</span><span class="w"> </span><span class="n">fa</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">u</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fa</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27"></a><span class="w">    </span><span class="n">dp</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">fa</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">siz</span><span class="p">[</span><span class="n">u</span><span class="p">];</span>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29"></a>
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30"></a><span class="w">  </span><span class="n">dfs2</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="w"> </span><span class="n">u</span><span class="p">);</span>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31"></a><span class="w">  </span><span class="n">dfs2</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">u</span><span class="p">],</span><span class="w"> </span><span class="n">u</span><span class="p">);</span>
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32"></a><span class="p">}</span>
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33"></a>
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35"></a><span class="p">{</span>
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36"></a><span class="w">  </span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="w"> </span><span class="n">read</span><span class="p">(</span><span class="n">rs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38"></a><span class="w">  </span><span class="n">dfs1</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39"></a><span class="w">  </span><span class="n">dfs2</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40"></a>
+</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41"></a><span class="w">  </span><span class="n">ll</span><span class="w"> </span><span class="n">ans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1e18</span><span class="p">;</span>
+</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ll</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="n">ans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span><span class="w"> </span><span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span><span id="__span-5-43"><a id="__codelineno-5-43" name="__codelineno-5-43"></a><span class="w">  </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ans</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+</span><span id="__span-5-44"><a id="__codelineno-5-44" name="__codelineno-5-44"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-5-45"><a id="__codelineno-5-45" name="__codelineno-5-45"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>该路径也等同于该子树的最长路径，读者自己思考一下为什么&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
