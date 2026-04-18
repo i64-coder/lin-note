@@ -1,5 +1,4 @@
 @echo off
-call .venv\Scripts\activate
 zensical build
 git pull
 git add .
