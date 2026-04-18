@@ -447,6 +447,7 @@ combine_header_slug = true
 [project.markdown_extensions.pymdownx.tasklist]
 custom_checkbox = true
 [project.markdown_extensions.pymdownx.tilde]
+lang = ["zh", "en"]        # 支持的语言
 [project.plugins.search]
 separator = '[\s\u200b\-\uff0c\u3002\uff1f\uff01]+'  # 中文标点符号
 lang = ["zh"]  # 中文
