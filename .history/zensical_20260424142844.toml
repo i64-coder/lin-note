@@ -139,13 +139,9 @@ nav = [
     ] },
   ] },
   { "atc比赛" = [
-    { "AtCoder Beginner Contest 454" = [
-        "atc比赛/AtCoder Beginner Contest 454/A - Closed interval.md",
-        "atc比赛/AtCoder Beginner Contest 454/B - Mapping.md",
-        "atc比赛/AtCoder Beginner Contest 454/C - Straw Millionaire.md",
-        "atc比赛/AtCoder Beginner Contest 454/D - (xx).md",
-        "atc比赛/AtCoder Beginner Contest 454/E - LRUD Moving.md",
-      ]}
+    {
+    }
+    "atc比赛/AtCoder Beginner Contest 454/A - Closed interval.md",
   ]}
 ]
 
